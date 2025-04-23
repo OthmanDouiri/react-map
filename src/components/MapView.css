@@ -1,0 +1,58 @@
+/* MapView.css */
+
+.map-container {
+    height: 100vh;
+    position: relative;
+  }
+  
+  .map-controls {
+    position: absolute;
+    z-index: 1000;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #ffffffee;
+    padding: 12px 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    gap: 10px;
+  }
+  
+  .map-input {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    width: 220px;
+  }
+  
+  .map-button {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    color: white;
+  }
+  
+  .add-btn {
+    background-color: #28a745;
+  }
+  
+  .locate-btn {
+    background-color: #007bff;
+  }
+  
+  .toggle-btn {
+    background-color: #6c757d;
+  }
+  
+  .popup-button {
+    margin-top: 8px;
+    background: red;
+    color: white;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
