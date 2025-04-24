@@ -67,6 +67,7 @@ const MapView: React.FC = () => {
       `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&units=metric&appid=${weatherKey}&lang=es`
     );
     const weatherData = await weatherRes.json();
+
     const weather =
       weatherData?.weather?.[0]?.description && weatherData?.main?.temp
         ? `${weatherData.weather[0].description} · ${weatherData.main.temp}°C`
@@ -97,9 +98,10 @@ const MapView: React.FC = () => {
   const locateMe = async () => {
     if (!navigator.geolocation) {
       alert('Geolocalización no soportada');
-      return;
+      return; 
     }
   
+    // Obtener la ubicación actual del usuario
     navigator.geolocation.getCurrentPosition(async (pos) => {
       const { latitude, longitude } = pos.coords;
       mapRef.current?.setView([latitude, longitude], 10);
