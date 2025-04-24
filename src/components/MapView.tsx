@@ -94,27 +94,51 @@ const MapView: React.FC = () => {
   };
 
   // Función para obtener y centrar el mapa en la ubicación actual
-  const locateMe = () => {
+  const locateMe = async () => {
     if (!navigator.geolocation) {
       alert('Geolocalización no soportada');
       return;
     }
-
-    navigator.geolocation.getCurrentPosition((pos) => {
+  
+    navigator.geolocation.getCurrentPosition(async (pos) => {
       const { latitude, longitude } = pos.coords;
       mapRef.current?.setView([latitude, longitude], 10);
-
-      const newCity: City = {
-        id: Date.now(),
-        name: 'Mi ubicación',
-        lat: latitude,
-        lng: longitude,
-        weather: null,
-      };
-
-      setCities((prev) => [...prev, newCity]);
+  
+      // Obtener clima desde OpenWeather
+      const weatherKey = import.meta.env.VITE_OPENWEATHER_API_KEY;
+      const weatherRes = await fetch(
+        `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&appid=${weatherKey}&lang=es`
+      );
+      const weatherData = await weatherRes.json();
+      const weather =
+        weatherData?.weather?.[0]?.description && weatherData?.main?.temp
+          ? `${weatherData.weather[0].description} · ${weatherData.main.temp}°C`
+          : null;
+  
+      setCities((prevCities) => {
+        const exists = prevCities.find((city) => city.name === 'Mi ubicación');
+        if (exists) {
+          // Si ya existe, actualizar posición y clima
+          return prevCities.map((city) =>
+            city.name === 'Mi ubicación' ? { ...city, lat: latitude, lng: longitude, weather }: city
+          );
+        } else {
+          // Si no existe, agregarla
+          return [
+            ...prevCities,
+            {
+              id: Date.now(),
+              name: 'Mi ubicación',
+              lat: latitude,
+              lng: longitude,
+              weather,
+            },
+          ];
+        }
+      });
     });
   };
+  
 
 // Retorna el estilo de mapa actual (callejero o terreno)
   const getTileLayer = () => {
